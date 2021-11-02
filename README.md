@@ -8,7 +8,7 @@
    [license-shield]: https://img.shields.io/badge/License-Apache_2.0-blue.svg
    [license-url]: https://opensource.org/licenses/Apache-2.0
 
-   <h1 align="center">Simple Arcball Package</h1>
+   <h1 align="center">Arcball Graphics Package</h1>
 </div>
 
 
@@ -37,7 +37,7 @@
 
 
 ## About The Project
-SAP is a simple header only library containing a templated quaternion implementation, a arcball implementation ( improved over traditional arcball, see white paper in repo), and a few other functions required to create MVP matricies. The library is written to be auto-vectorized when possible with the appropriate auto-vectorization flags per compiler. Unit testing implemented with doctest.
+AGP is a simple header only library containing a templated quaternion implementation, a arcball implementation ( improved over traditional arcball, see white paper in repo), and a few other functions required to create MVP matricies. The library is written to be auto-vectorized when possible with the appropriate auto-vectorization flags per compiler. Unit testing implemented with doctest.
 
 
 
