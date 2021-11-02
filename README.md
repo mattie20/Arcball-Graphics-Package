@@ -1,12 +1,12 @@
 <div id="header">
 
    [![Issues][issues-shield]][issues-url]
-   [![Apache 2.0 License][license-shield]][license-url]
+   [![License][license-shield]][license-url]
 
    [issues-shield]: https://img.shields.io/github/issues/mattie20/Arcball-Graphics-Package
    [issues-url]: https://github.com/mattie20/Arcball-Graphics-Package/issues
-   [license-shield]: https://img.shields.io/github/license/mattie20/Arcball-Graphics-Package.svg?style=for-the-badge
-   [license-url]: https://github.com/mattie20/Arcball-Graphics-Package/blob/master/LICENSE.txt
+   [license-shield]: https://img.shields.io/badge/License-Apache_2.0-blue.svg
+   [license-url]: https://opensource.org/licenses/Apache-2.0
 
    <h1 align="center">Simple Arcball Package</h1>
 </div>
