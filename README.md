@@ -3,19 +3,19 @@
    [![Issues][issues-shield]][issues-url]
    [![Apache 2.0 License][license-shield]][license-url]
 
-   [issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-   [issues-url]: https://github.com/github_username/repo_name/issues
-   [license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-   [license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+   [issues-shield]: https://img.shields.io/github/issues/mattie20/Arcball-Graphics-Package
+   [issues-url]: https://github.com/mattie20/Arcball-Graphics-Package/issues
+   [license-shield]: https://img.shields.io/github/license/mattie20/Arcball-Graphics-Package.svg?style=for-the-badge
+   [license-url]: https://github.com/mattie20/Arcball-Graphics-Package/blob/master/LICENSE.txt
 
    <h1 align="center">Simple Arcball Package</h1>
 </div>
 
 
   <p align="center">
-    <a href="https://github.com/github_username/repo_name/issues"><strong>Report Bug</strong></a>
+    <a href="https://github.com/mattie20/Arcball-Graphics-Package/issues"><strong>Report Bug</strong></a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues"><strong>Request Feature</strong></a>
+    <a href="https://github.com/mattie20/Arcball-Graphics-Package/issues"><strong>Request Feature</strong></a>
   </p>
     <summary>Table of Contents</summary>
   <ol>
@@ -250,7 +250,7 @@ Calculate Difference of a Vec3
 If you have a suggestion that would make this project better, simply open an issue with the tag "enhancement". 
 Don't forget to give the project a star! Thanks again!
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/mattie20/Arcball-Graphics-Package/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#header">back to top</a>)</p>
 
@@ -266,7 +266,7 @@ Distributed under the Apache 2.0 License. See `LICENSE.txt` for more information
 
 Matthew Elks - mattelks43216@gmail.com
 
-Github: [https://github.com/github_username](https://github.com/github_username)
+Github: [https://github.com/github_username](https://github.com/mattie20)
 
 
 
