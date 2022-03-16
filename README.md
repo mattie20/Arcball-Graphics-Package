@@ -266,7 +266,7 @@ Distributed under the Apache 2.0 License. See `LICENSE.txt` for more information
 
 Matthew Elks - mattelks43216@gmail.com
 
-Github: [https://github.com/github_username](https://github.com/mattie20)
+Github: [https://github.com/mattie20](https://github.com/mattie20)
 
 
 
