@@ -16,7 +16,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include"./doctest/doctest.h"
 #define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
-#include"../agp.h"
+#include"../libs/agp/agp.h"
 #include<iostream>
 #include<string>
 #include<sstream>
@@ -46,6 +46,32 @@ TEST_CASE("MultiplyModelViewProj()"){
 }
 
 
+TEST_CASE("TransposeMat4()"){
+
+    float mat4[16] = {
+        1.34, 2.29, 3.21, 4.9,
+        3.33, 2.29, 1.135, 9.56,
+        4.78, 3.98, 2.11, 5.65,
+        1.11, 9.89, 5.12, 3.39
+    };
+
+    float mat4_trans[16];
+
+    float expect[16] = {
+        1.34, 3.33, 4.78, 1.11,
+        2.29, 2.29, 3.98, 9.89,
+        3.21, 1.135, 2.11, 5.12,
+        4.9, 9.56, 5.65, 3.39
+    };
+
+    TransposeMat4(mat4, mat4_trans);
+
+    for(int i=0;i<16;i++){
+        CHECK(mat4_trans[i] == doctest::Approx( expect[i] ).epsilon(0.0001));
+    }
+}
+
+
 TEST_CASE("CrossVec3()"){
 
     float epsilon = 0.000001;
@@ -55,7 +81,7 @@ TEST_CASE("CrossVec3()"){
     float vec[3];
     float expect[3] = {-2.25, 2.19, -3.21};
 
-    CrossVec3(vec_1, vec_2, vec);
+    CrossVec(vec_1, vec_2, vec);
 
     for(int i=0;i<3;i++){
         REQUIRE(abs(expect[i] - vec[i]) < epsilon);
@@ -70,7 +96,7 @@ TEST_CASE("NormalizeVec3()"){
     float vec[3] = {-2.25, 2.19, -3.21};
     float expect[3] = {-0.501081, 0.487719, -0.714876};
 
-    NormalizeVec3(vec);
+    NormalizeVec<3>(vec);
 
     for(int i=0;i<3;i++){
         REQUIRE(abs(expect[i] - vec[i]) < epsilon);
@@ -86,7 +112,7 @@ TEST_CASE("DiffVec3()"){
 
     float expect[3] = {6.1, -8.3, -8.9725};
 
-    DiffVec3(vec1, vec2, output);
+    DiffVec<3>(vec1, vec2, output);
 
     for(int i=0;i<3;i++){
         CHECK(output[i] == doctest::Approx( expect[i] ).epsilon(0.000001));
@@ -98,7 +124,7 @@ TEST_CASE("MagnitudeVec3()"){
 
     float expect = 5.14198;
 
-    float output = MagnitudeVec3(vec1);
+    float output = MagnitudeVec<3>(vec1);
 
     CHECK(output == doctest::Approx( expect ).epsilon(0.000001));
 

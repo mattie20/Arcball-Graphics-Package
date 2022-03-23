@@ -17,8 +17,8 @@
 //  and the engines move the universe around it" -Futurama
 
 
-#ifndef SIMPLE_ARCBALL_PACKAGE_H_
-#define SIMPLE_ARCBALL_PACKAGE_H_
+#ifndef ARCBALL_GRAPHICS_PACKAGE_H_
+#define ARCBALL_GRAPHICS_PACKAGE_H_
 
 
 #include<cmath>
@@ -27,7 +27,7 @@
 #include<initializer_list>
 
 
-// result = matrix_1 * matrix_2 in row major
+// result = matrix_1 * matrix_2 in row major order
 void Mat4MultiplyMat4T(const float * __restrict__ mat4_1, 
 const float * __restrict__ mat4_2, float * __restrict__ out){
     for (int i=0; i<4; i++){
@@ -36,6 +36,15 @@ const float * __restrict__ mat4_2, float * __restrict__ out){
             for (int k=0; k<4; k++){
                 out[i*4 + j] += mat4_1[i*4 + k]*mat4_2[j*4 + k];
             }
+        }
+    }
+}
+
+
+void TransposeMat4(float *__restrict__ mat4_in, float *__restrict__ mat4_out){
+    for(int i=0; i<4; i++){
+        for(int j=0; j<4; j++){
+            mat4_out[i*4 + j] = mat4_in[j*4 + i];
         }
     }
 }
@@ -60,31 +69,31 @@ void PrintMat4(const float *matrix, const char* name){
     std::cout<<" }\n";
 }
 
-
-void NormalizeVec3(float *vec3){
+template<int N>
+void NormalizeVec(float *vec3){
     float magnitude = 0;
-    for(int i=0; i<3; i++){
+    for(int i=0; i<N; i++){
         magnitude += vec3[i]*vec3[i];
     }
     magnitude = 1/sqrt(magnitude);
 
-    for(int i=0; i<3; i++){
+    for(int i=0; i<N; i++){
         vec3[i] = vec3[i]*magnitude;
     }
 }
 
 
-void CrossVec3(const float * __restrict__ left_vec, 
+void CrossVec(const float * __restrict__ left_vec, 
 const float * __restrict__ right_vec, float * __restrict__ return_vec){
     return_vec[0] = left_vec[1]*right_vec[2] - left_vec[2]*right_vec[1];
     return_vec[1] = left_vec[2]*right_vec[0] - left_vec[0]*right_vec[2];
     return_vec[2] = left_vec[0]*right_vec[1] - left_vec[1]*right_vec[0];
 }
 
-
-float DotVec3(const float * __restrict__ vec1, const float * __restrict__ vec2){
+template<int N>
+float DotVec(const float * __restrict__ vec1, const float * __restrict__ vec2){
     float output = 0;
-    for (int i=0; i<3; i++){
+    for (int i=0; i<N; i++){
         output += vec1[i]*vec2[i];
     }
     return output;
@@ -92,17 +101,19 @@ float DotVec3(const float * __restrict__ vec1, const float * __restrict__ vec2){
 
 
 // outvec = vec1 - vec2
-void DiffVec3(const float * __restrict__ vec1, const float * __restrict__ vec2,
+template<int N>
+void DiffVec(const float * __restrict__ vec1, const float * __restrict__ vec2,
  float * __restrict__ outvec){
-    for (int i=0; i<3; i++){
+    for (int i=0; i<N; i++){
         outvec[i] = vec1[i] - vec2[i];
     }
 }
 
 
-float MagnitudeVec3(const float *vec){
+template<int N>
+float MagnitudeVec(const float *vec){
     float output = 0;
-    for (int i=0; i<3; i++){
+    for (int i=0; i<N; i++){
         output += vec[i]*vec[i];
     }
     return sqrt(output);
@@ -128,7 +139,7 @@ void SetCamera(const float *cam_pos, const float *up){
         cam_mag += cam_pos[i]*cam_pos[i];
         up_mag += up[i]*up[i];
     }
-    float dotprod = DotVec3(cam_pos, up)/(sqrt(cam_mag)*sqrt(up_mag));
+    float dotprod = DotVec<3>(cam_pos, up)/(sqrt(cam_mag)*sqrt(up_mag));
     float dir_vec[3];
 
     if( dotprod >= 0.999){
@@ -137,38 +148,38 @@ void SetCamera(const float *cam_pos, const float *up){
     }
     else if( dotprod >= 0.00001){
         // If vectors aren't perpendicular, make them perpendicular
-        DiffVec3(cam_pos, center_pos, dir_vec);
+        DiffVec<3>(cam_pos, center_pos, dir_vec);
 
         float right[3];
-        CrossVec3(up, dir_vec, right);
-        CrossVec3(dir_vec, right, up_vec);
+        CrossVec(up, dir_vec, right);
+        CrossVec(dir_vec, right, up_vec);
     }
     else{
         // Vectors are Perpendicular
         std::copy(up, up + 3, up_vec);
-        DiffVec3(cam_pos, center_pos, dir_vec);
+        DiffVec<3>(cam_pos, center_pos, dir_vec);
     }
 
     std::copy(cam_pos, cam_pos + 3, camera_pos);
-    NormalizeVec3(up_vec);
+    NormalizeVec<3>(up_vec);
     FormBasis();
 
-    radius = MagnitudeVec3(dir_vec);
+    radius = MagnitudeVec<3>(dir_vec);
 }
 
 void SetCenter(const float *input){
     std::copy(input, input+3, center_pos);
     FormBasis();
     float dir_vec[3];
-    DiffVec3(camera_pos, center_pos, dir_vec);
-    radius = radius = MagnitudeVec3(dir_vec);
+    DiffVec<3>(camera_pos, center_pos, dir_vec);
+    radius = radius = MagnitudeVec<3>(dir_vec);
 }
 
 void SetRadius(const float input){
     if(input < 0){throw std::runtime_error("Radius Negative");}
     float dir_vec[3];
-    DiffVec3(camera_pos, center_pos, dir_vec);
-    NormalizeVec3(dir_vec);
+    DiffVec<3>(camera_pos, center_pos, dir_vec);
+    NormalizeVec<3>(dir_vec);
     radius = input;
     for (int i=0; i<3; i++){
         camera_pos[i] = radius*dir_vec[i] + center_pos[i];
@@ -255,8 +266,8 @@ void Zoom(const float mouse_x, const float mouse_y, const float zoom){
     }
 
     float dir_vec[3];
-    DiffVec3(camera_pos, center_pos, dir_vec);
-    NormalizeVec3(dir_vec);
+    DiffVec<3>(camera_pos, center_pos, dir_vec);
+    NormalizeVec<3>(dir_vec);
     for (int i=0; i<3; i++){
         camera_pos[i] = dir_vec[i]*radius + center_pos[i];
     }
@@ -297,9 +308,9 @@ void ViewProjMatrix(float *matrix){
     FormBasis();
 
     // Matrix Multiplication of View Matrix With the Sparse Projection Matrix
-    matrix[3] = -DotVec3(camera_pos, basis)*m00;
-    matrix[7] = -DotVec3(camera_pos, basis + 3)*m11;
-    matrix[15] = DotVec3(camera_pos, basis + 6);
+    matrix[3] = -DotVec<3>(camera_pos, basis)*m00;
+    matrix[7] = -DotVec<3>(camera_pos, basis + 3)*m11;
+    matrix[15] = DotVec<3>(camera_pos, basis + 6);
     matrix[11] = -matrix[15]*m22 + m32;
 
     for(int i=0; i<3; i++){
@@ -317,10 +328,10 @@ void FormBasis(){
     for (int i=0; i<3; i++){
         basis[i + 6] = camera_pos[i] - center_pos[i];
     }
-    NormalizeVec3(basis + 6);
+    NormalizeVec<3>(basis + 6);
     std::copy(up_vec, up_vec + 3, basis + 3);
-    CrossVec3(basis + 3, basis + 6, basis);
-    NormalizeVec3(basis);
+    CrossVec(basis + 3, basis + 6, basis);
+    NormalizeVec<3>(basis);
 }
 
 float basis[9];
@@ -431,12 +442,12 @@ void Rotate(float *vec){
     float qcrossr[3];
     float qright[3];
 
-    CrossVec3(q, vec, qcrossr);
+    CrossVec(q, vec, qcrossr);
 
     for(int i=0; i<3; i++){
         q[i] = 2*q[i];
     }
-    CrossVec3(q, qcrossr, qright);
+    CrossVec(q, qcrossr, qright);
 
     for(int i=0; i<3; i++){
         vec[i] += 2*quat[0]*qcrossr[i] + qright[i];
